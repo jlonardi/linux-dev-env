@@ -1,3 +1,4 @@
+#!/bin/sh
 echo Starting the setup...
 
 # Update soruces
@@ -75,3 +76,42 @@ sudo pip install docker-compose
 
 sudo usermod -a -G docker $USER
 
+# Programs used only for bare metal installs
+for i in "$@" ; do
+    if [ $i = "--bare" ] ; then
+        
+        # Dropbox
+        echo
+        echo --- Installing Dropbox ---
+        echo
+        sudo apt-get -y install nautilus-dropbox
+
+        # Spotify
+        echo
+        echo --- Installing Spotify ---
+        echo
+        # 1. Add the Spotify repository signing keys to be able to verify downloaded packages
+        sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0DF731E45CE24F27EEEB1450EFDC8610341D9410 931FF8E79F0876134EDDBDCCA87FF9DF48BF1C90
+        # 2. Add the Spotify repository
+        echo deb http://repository.spotify.com stable non-free | sudo tee /etc/apt/sources.list.d/spotify.list
+        # 3. Update list of available packages
+        sudo apt-get update
+        # 4. Install Spotify
+        sudo apt-get -y install spotify-client
+
+        # Libreoffice
+        echo
+        echo --- Installing LibreOffice ---
+        echo
+        sudo add-apt-repository ppa:libreoffice/ppa
+        sudo apt-get update
+        sudo apt-get -y install libreoffice
+
+        # Gimp
+        echo
+        echo --- Installing Gimp ---
+        echo
+        sudo apt-get -y install gimp
+        break
+    fi
+done
