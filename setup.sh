@@ -38,6 +38,13 @@ sudo apt-get -y install gconf2
 sudo dpkg -i gitkraken-amd64.deb
 rm gitkraken-amd64.deb
 
+# Increse inotify limit for GitKraken
+echo
+echo --- Increase notify limit ---
+echo
+echo fs.inotify.max_user_watches=99999 | sudo tee /etc/sysctl.d/40-max-user-watches.conf && sudo sysctl --system
+
+
 # Chrome 
 echo
 echo --- Installing Chrome ---
@@ -75,6 +82,15 @@ echo
 sudo pip install docker-compose
 
 sudo usermod -a -G docker $USER
+
+# Postgres tools
+echo
+echo --- Installing PSQL tools ---
+echo
+wget https://github.com/sqlectron/sqlectron-gui/releases/download/v1.29.0/Sqlectron_1.29.0_amd64.deb
+sudo dpkg -i Sqlectron_1.29.0_amd64.deb
+rm Sqlectron_1.29.0_amd64.deb
+
 
 # Programs used only for bare metal installs
 for i in "$@" ; do
